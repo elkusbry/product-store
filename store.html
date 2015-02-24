@@ -48,7 +48,7 @@
                 <div ng-repeat="review in product.reviews">
                   <blockquote>
                     <strong>{{review.stars}} Stars.</strong> {{review.description}}
-                    <cite class="clearfix">-{{review.author}} on {{review.date | date}}</cite>
+                    <cite class="clearfix">-{{review.author}} on {{review.createdOn | date}}</cite>
                    </blockquote>
                 </div>
               
