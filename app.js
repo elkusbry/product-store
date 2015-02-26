@@ -118,6 +118,7 @@
         console.log("User is logged out");
       }
       
+      $scope.authData = authData;
       
       $scope.logUserIn = function(userLoginCtrl){
     
@@ -159,8 +160,7 @@
       };
       
       
-      $scope.logUserOut = function (){
-        alert('logout clicked');
+      $scope.logUserOut = function (userLoginCtrl){
         
         ref.child("users").child(authData.uid).update({
               online: false
