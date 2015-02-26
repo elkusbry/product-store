@@ -120,14 +120,13 @@
       
       
       $scope.logUserIn = function(userLoginCtrl){
-        alert('yes');
     
         userLoginCred = {
               email: this.userLoginCtrl.email,
               password: this.userLoginCtrl.password
             };
             
-        
+                
         ref.authWithPassword({
                 email: this.userLoginCtrl.email,
                 password: this.userLoginCtrl.password
@@ -137,12 +136,36 @@
             console.log("Login Failed!", error);
           } else {
             console.log("Authenticated successfully with payload:", authData);
+
+            ref.child("users").child(authData.uid).set({
+                  provider: authData.provider,
+                  name: getName(authData),
+                  online: true
+                });
+                
+            // find a suitable name based on the meta info given by each provider
+            function getName(authData) {
+              switch(authData.provider) {
+                 case 'password':
+                   return authData.password.email.replace(/@.*/, '');
+                 case 'twitter':
+                   return authData.twitter.displayName;
+                 case 'facebook':
+                   return authData.facebook.displayName;
+              }
+            }
           }
         });
       };
       
+      
       $scope.logUserOut = function (){
         alert('logout clicked');
+        
+        ref.child("users").child(authData.uid).update({
+              online: false
+            });
+            
         ref.unauth();
         
         if (authData) {
@@ -152,15 +175,7 @@
         };
       };
       
-      
-      
-      ref.unauth();
-      
-      if (authData) {
-        console.log("User " + authData.uid + " is logged in with " + authData.provider);
-      } else {
-        console.log("User is logged out");
-      }
+    
     }]);
   
 
