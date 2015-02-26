@@ -1,6 +1,11 @@
 (function() {
   
   var app = angular.module("sampleApp", ["firebase"]);
+  
+  
+  
+  
+  
 
   app.controller("MyCtrl", ["$scope", "$firebase",
     function($scope, $firebase) {
@@ -48,7 +53,7 @@
  app.controller("StoreController", ["$scope", "$firebase",
     function($scope, $firebase) {
      // this.products = gems;
-   
+     
      var rootRef = new Firebase('https://elkusbry-01.firebaseio.com/products/');
      // rootRef.child('products');
    
@@ -66,6 +71,102 @@
      
   }
 ]);
+
+
+  //
+//   var ref = new Firebase("https://elkusbry-01.firebaseio.com/");
+//   var authData = ref.getAuth();
+//   if (authData) {
+//     console.log("User " + authData.uid + " is logged in with " + authData.provider);
+//   } else {
+//     console.log("User is logged out");
+//   }
+//   ref.authWithPassword({
+//           email: "bryanelkus@gmail.com",
+//           password: "test"
+//   }, function(error, authData) {
+//     if (error) {
+//       console.log("Login Failed!", error);
+//     } else {
+//       console.log("Authenticated successfully with payload:", authData);
+//     }
+//   });
+//
+// console.log("Authenticated user with uid:", authData.uid);
+//
+//   var userLoginCred = {};
+//
+//   console.log('essss' + userLoginCred);
+//   logInUser = function(){
+//
+//     console.log(userLoginCred);
+//     alert('yes');
+//   };
+  
+  
+  app.controller("UserLogin", ["$scope", "$firebase", 
+    function($scope, $firebase){
+          
+      var ref = new Firebase("https://elkusbry-01.firebaseio.com/");
+
+      var userLoginCtrl = {};
+      
+      var authData = ref.getAuth();
+      if (authData) {
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+      } else {
+        console.log("User is logged out");
+      }
+      
+      
+      $scope.logUserIn = function(userLoginCtrl){
+        alert('yes');
+    
+        userLoginCred = {
+              email: this.userLoginCtrl.email,
+              password: this.userLoginCtrl.password
+            };
+            
+        
+        ref.authWithPassword({
+                email: this.userLoginCtrl.email,
+                password: this.userLoginCtrl.password
+        }, function(error, authData) {
+          remember: "none";
+          if (error) {
+            console.log("Login Failed!", error);
+          } else {
+            console.log("Authenticated successfully with payload:", authData);
+          }
+        });
+      };
+      
+      $scope.logUserOut = function (){
+        alert('logout clicked');
+        ref.unauth();
+        
+        if (authData) {
+          console.log("User " + authData.uid + " is logged in with " + authData.provider);
+        } else {
+          console.log("User is logged out");
+        };
+      };
+      
+      
+      
+      ref.unauth();
+      
+      if (authData) {
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+      } else {
+        console.log("User is logged out");
+      }
+    }]);
+  
+
+
+
+
 
 app.controller("ReviewController", ["$scope", "$firebase",
   function($scope, $firebase) {
